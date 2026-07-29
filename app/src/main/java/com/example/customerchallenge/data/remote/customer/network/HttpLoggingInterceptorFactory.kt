@@ -1,4 +1,4 @@
-package com.example.customerchallenge.data.remote.network
+package com.example.customerchallenge.data.remote.customer.network
 
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.BuildConfig

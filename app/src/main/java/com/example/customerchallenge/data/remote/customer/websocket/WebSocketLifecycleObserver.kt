@@ -1,4 +1,4 @@
-package com.example.customerchallenge.data.remote.websocket
+package com.example.customerchallenge.data.remote.customer.websocket
 
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner

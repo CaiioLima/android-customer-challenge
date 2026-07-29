@@ -1,7 +1,7 @@
-package com.example.customerchallenge.data.remote.mapper
+package com.example.customerchallenge.data.remote.customer.mapper
 
-import com.example.customerchallenge.data.remote.dto.CustomerDTO
-import com.example.customerchallenge.data.remote.dto.CustomersResponseDTO
+import com.example.customerchallenge.data.remote.customer.dto.CustomerDTO
+import com.example.customerchallenge.data.remote.customer.dto.CustomersResponseDTO
 import com.example.customerchallenge.domain.model.Customer
 
 internal fun CustomerDTO.toDomain(): Customer {

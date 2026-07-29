@@ -1,4 +1,4 @@
-package com.example.customerchallenge.data.remote.error
+package com.example.customerchallenge.data.remote.customer.error
 
 import retrofit2.HttpException
 import java.io.IOException
@@ -7,16 +7,16 @@ import java.net.UnknownHostException
 
 internal object NetworkErrorMapper {
 
-    fun map(throwable: Throwable): NetworkException {
+    fun map(throwable: Throwable): com.example.customerchallenge.data.remote.customer.error.NetworkException {
         return when (throwable) {
-            is NetworkException -> throwable
+            is com.example.customerchallenge.data.remote.customer.error.NetworkException -> throwable
 
             is SocketTimeoutException -> {
-                NetworkException.Timeout(cause = throwable)
+                _root_ide_package_.com.example.customerchallenge.data.remote.customer.error.NetworkException.Timeout(cause = throwable)
             }
 
             is UnknownHostException -> {
-                NetworkException.NoConnection(cause = throwable)
+                _root_ide_package_.com.example.customerchallenge.data.remote.customer.error.NetworkException.NoConnection(cause = throwable)
             }
 
             is HttpException -> {
@@ -24,18 +24,18 @@ internal object NetworkErrorMapper {
             }
 
             is IOException -> {
-                NetworkException.NoConnection(cause = throwable)
+                _root_ide_package_.com.example.customerchallenge.data.remote.customer.error.NetworkException.NoConnection(cause = throwable)
             }
 
             else -> {
-                NetworkException.Unexpected(cause = throwable)
+                _root_ide_package_.com.example.customerchallenge.data.remote.customer.error.NetworkException.Unexpected(cause = throwable)
             }
         }
     }
 
     private fun mapHttpException(
         exception: HttpException
-    ): NetworkException {
+    ): com.example.customerchallenge.data.remote.customer.error.NetworkException {
         return when (exception.code()) {
             401, 403 -> NetworkException.Unauthorized(
                 cause = exception

@@ -1,4 +1,4 @@
-package com.example.customerchallenge.data.remote.websocket
+package com.example.customerchallenge.data.remote.customer.websocket
 
 sealed interface WebSocketConnectionState {
 

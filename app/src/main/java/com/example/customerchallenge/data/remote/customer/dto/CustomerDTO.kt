@@ -1,4 +1,4 @@
-package com.example.customerchallenge.data.remote.dto
+package com.example.customerchallenge.data.remote.customer.dto
 
 import com.google.gson.annotations.SerializedName
 

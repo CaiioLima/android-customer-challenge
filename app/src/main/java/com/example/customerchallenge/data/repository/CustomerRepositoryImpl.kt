@@ -1,7 +1,7 @@
 package com.example.customerchallenge.data.repository
 
-import com.example.customerchallenge.data.remote.datasource.CustomerRemoteDataSource
-import com.example.customerchallenge.data.remote.mapper.toDomain
+import com.example.customerchallenge.data.remote.customer.datasource.CustomerRemoteDataSource
+import com.example.customerchallenge.data.remote.customer.mapper.toDomain
 import com.example.customerchallenge.domain.model.Customer
 import com.example.customerchallenge.domain.repository.CustomerRepository
 
