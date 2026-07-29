@@ -9,4 +9,7 @@
     <string name="customers_empty_title">No customers found</string>
     <string name="customers_empty_message">There are no customers available.</string>
     <string name="customers_error_title">Unable to load customers</string>
+    <string name="customer_profile_load_error">Unable to load customer profile.</string>
+    <string name="retry">Retry</string>
+    <string name="back">Back</string>
 </resources>

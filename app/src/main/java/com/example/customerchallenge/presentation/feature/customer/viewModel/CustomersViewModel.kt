@@ -130,6 +130,11 @@ class CustomersViewModel(
                 if (customers.isEmpty()) {
                     CustomersUIState.Empty
                 } else {
+                    Log.e(
+                        "teste",
+                        customers.get(2).profileImage!!,
+
+                    )
                     CustomersUIState.Success(
                         customers = customers,
                         filteredCustomers = customers,
@@ -137,6 +142,10 @@ class CustomersViewModel(
                     )
                 }
             }
+
+            //https://github.com/newloran2/testApp2026/blob/main/imagens/macaco3.jpg?raw=true
+            //https://github.com/newloran2/testApp2026/blob/main/imagens/macaco3.jpeg
+
         }.onFailure { error ->
             Log.e(
                 TAG,
