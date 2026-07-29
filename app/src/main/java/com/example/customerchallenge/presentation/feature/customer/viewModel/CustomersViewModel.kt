@@ -1,4 +1,4 @@
-package com.example.customerchallenge.presentation.customer.viewModel
+package com.example.customerchallenge.presentation.feature.customer.viewModel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

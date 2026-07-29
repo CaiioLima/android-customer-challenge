@@ -1,4 +1,4 @@
-package com.example.customerchallenge.presentation.customer
+package com.example.customerchallenge.presentation.feature.customer
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -17,11 +17,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.customerchallenge.presentation.CustomersUIAction
 import com.example.customerchallenge.presentation.CustomersUIState
-import com.example.customerchallenge.presentation.customer.components.CustomerItem
-import com.example.customerchallenge.presentation.customer.components.CustomersEmptyState
-import com.example.customerchallenge.presentation.customer.components.CustomersErrorState
-import com.example.customerchallenge.presentation.customer.components.CustomersLoadingState
-import com.example.customerchallenge.presentation.customer.viewModel.CustomersViewModel
+import com.example.customerchallenge.presentation.customer.CustomersUISideEffect
+import com.example.customerchallenge.presentation.feature.customer.components.CustomerItem
+import com.example.customerchallenge.presentation.feature.customer.components.CustomersEmptyState
+import com.example.customerchallenge.presentation.feature.customer.components.CustomersErrorState
+import com.example.customerchallenge.presentation.feature.customer.components.CustomersLoadingState
+import com.example.customerchallenge.presentation.feature.customer.viewModel.CustomersViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

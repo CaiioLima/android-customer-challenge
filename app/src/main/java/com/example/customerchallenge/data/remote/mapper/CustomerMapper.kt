@@ -11,7 +11,10 @@ internal fun CustomerDTO.toDomain(): Customer {
         status = status.orEmpty(),
         email = email.orEmpty(),
         phone = phone,
-        profileImage = profileImage,
+        profileImage = profileImage?.replace(
+            oldValue = "/testApp/",
+            newValue = "/testApp2026/"
+        ),
         profileLink = profileLink
     )
 }

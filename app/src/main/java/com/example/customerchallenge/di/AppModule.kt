@@ -4,6 +4,8 @@ import com.example.customerchallenge.data.remote.datasource.CustomerRemoteDataSo
 import com.example.customerchallenge.data.repository.CustomerRepositoryImpl
 import com.example.customerchallenge.domain.repository.CustomerRepository
 import com.example.customerchallenge.domain.usecase.GetCustomersUseCase
+import com.example.customerchallenge.presentation.feature.customer.viewModel.CustomersViewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val appModule = module {
@@ -16,5 +18,8 @@ val appModule = module {
 
     //usecase
     factory { GetCustomersUseCase(repository = get()) }
+
+    //viewModel
+    viewModel{ CustomersViewModel(get()) }
 
 }

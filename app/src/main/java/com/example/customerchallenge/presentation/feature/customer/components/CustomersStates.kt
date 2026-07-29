@@ -1,4 +1,4 @@
-package com.example.customerchallenge.presentation.customer.components
+package com.example.customerchallenge.presentation.feature.customer.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
