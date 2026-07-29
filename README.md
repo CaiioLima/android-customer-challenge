@@ -24,16 +24,6 @@ O projeto carrega clientes de um endpoint remoto, permite pesquisa local, abre o
 
 ## Screenshots
 
-Adicione as imagens em:
-
-```text
-docs/screenshots/
-├── customers-list.png
-├── customer-search.png
-├── customer-profile.png
-└── customer-full-image.png
-```
-
 | Lista de clientes | Pesquisa |
 |:---:|:---:|
 | <img src="docs/screenshots/customer_list.png" width="280"/> | <img src="docs/screenshots/customer_search.png" width="280"/> |
