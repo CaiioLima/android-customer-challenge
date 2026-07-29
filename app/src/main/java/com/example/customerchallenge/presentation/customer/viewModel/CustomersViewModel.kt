@@ -32,14 +32,20 @@ class CustomersViewModel(
         when (action) {
             is CustomersUIAction.CustomerClicked -> TODO()
             CustomersUIAction.LoadCustomers,
-            CustomersUIAction.Retry -> TODO()
+            CustomersUIAction.Retry -> loadCustomers()
         }
     }
 
     private fun loadCustomers() = viewModelScope.launch {
         _uiState.update { CustomersUIState.Loading }
         getCustomersUseCase().onSuccess { customers ->
-            _uiState.update { CustomersUIState.Success(customers) }
+            _uiState.update {
+                if(customers.isEmpty()){
+                    CustomersUIState.Empty
+                }else{
+                    CustomersUIState.Success(customers)
+                }
+            }
         }.onFailure { error ->
             Log.e(TAG,
                 "Failed to load customers",
