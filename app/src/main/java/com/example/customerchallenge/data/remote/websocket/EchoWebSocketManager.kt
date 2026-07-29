@@ -5,10 +5,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
@@ -26,13 +23,6 @@ class EchoWebSocketManager(
     private val managerScope = CoroutineScope(
         SupervisorJob() + Dispatchers.IO
     )
-
-    private val _connectionState =
-        MutableStateFlow<WebSocketConnectionState>(
-            WebSocketConnectionState.Disconnected
-        )
-
-    val connectionState = _connectionState.asStateFlow()
 
     private var webSocket: WebSocket? = null
     private var messageJob: Job? = null
@@ -68,16 +58,10 @@ class EchoWebSocketManager(
         )
 
         webSocket = null
-
-        _connectionState.value =
-            WebSocketConnectionState.Disconnected
     }
 
     private fun openConnection() {
         if (webSocket != null) return
-
-        _connectionState.value =
-            WebSocketConnectionState.Connecting
 
         val request = Request.Builder()
             .url(WEB_SOCKET_URL)
@@ -99,8 +83,6 @@ class EchoWebSocketManager(
                 Log.d(TAG, "WebSocket connection opened")
                 reconnectJob?.cancel()
                 reconnectJob = null
-
-                _connectionState.value = WebSocketConnectionState.Connected
                 startMessageLoop(webSocket)
             }
 
@@ -109,7 +91,6 @@ class EchoWebSocketManager(
                 text: String
             ) {
                 Log.d(TAG, "WebSocket message received: $text")
-                _connectionState.value = WebSocketConnectionState.MessageReceived(message = text)
             }
 
             override fun onMessage(
@@ -119,9 +100,6 @@ class EchoWebSocketManager(
                 val message = bytes.utf8()
 
                 Log.d(TAG, "WebSocket binary message received: $message")
-
-                _connectionState.value =
-                    WebSocketConnectionState.MessageReceived(message = message)
             }
 
             override fun onClosing(
@@ -148,7 +126,6 @@ class EchoWebSocketManager(
                 response: Response?
             ) {
                 Log.e(TAG, "WebSocket connection failed", throwable)
-                _connectionState.value = WebSocketConnectionState.Error(throwable = throwable)
                 handleDisconnection()
             }
         }
@@ -177,9 +154,6 @@ class EchoWebSocketManager(
         messageJob?.cancel()
         messageJob = null
 
-        _connectionState.value =
-            WebSocketConnectionState.Disconnected
-
         scheduleReconnect()
     }
 
@@ -191,19 +165,11 @@ class EchoWebSocketManager(
             delay(RECONNECT_DELAY_MILLIS)
 
             if (shouldRemainConnected) {
-                Log.d(
-                    TAG,
-                    "Attempting to reconnect WebSocket"
-                )
+                Log.d(TAG, "Attempting to reconnect WebSocket")
 
                 openConnection()
             }
         }
-    }
-
-    fun clear() {
-        disconnect()
-        managerScope.cancel()
     }
 
     private companion object {
