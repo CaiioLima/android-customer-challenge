@@ -5,14 +5,17 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.customerchallenge.presentation.CustomersUIAction
@@ -27,11 +30,13 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun CustomersScreen(
-    viewModel: CustomersViewModel = koinViewModel()
+    viewModel: CustomersViewModel = koinViewModel(),
+    onOpenProfile: (profileLink: String) -> Unit,
+    onOpenImage: (imageUrl: String) -> Unit
+
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
-    val uriHandler = LocalUriHandler.current
 
     LaunchedEffect(viewModel) {
         viewModel.sideEffect.collect { sideEffect ->
@@ -43,13 +48,11 @@ fun CustomersScreen(
                 }
 
                 is CustomersUISideEffect.OpenCustomerProfile -> {
-                    runCatching {
-                        uriHandler.openUri(sideEffect.profileLink)
-                    }.onFailure {
-                        snackbarHostState.showSnackbar(
-                            message = "Unable to open customer profile"
-                        )
-                    }
+                    onOpenProfile(sideEffect.profileLink)
+                }
+
+                is CustomersUISideEffect.OpenCustomerImage -> {
+                    onOpenImage(sideEffect.imageUrl)
                 }
             }
         }
@@ -63,6 +66,7 @@ fun CustomersScreen(
 
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomersScreen(
     uiState: CustomersUIState,
@@ -71,6 +75,16 @@ fun CustomersScreen(
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = "Customers List",
+                        style = typography.titleLarge
+                    )
+                }
+            )
+        },
         snackbarHost = {
             SnackbarHost(
                 hostState = snackbarHostState
@@ -108,9 +122,9 @@ fun CustomersScreen(
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(
                         start = 16.dp,
-                        top = paddingValues.calculateTopPadding() + 16.dp,
+                        top = paddingValues.calculateTopPadding(),
                         end = 16.dp,
-                        bottom = paddingValues.calculateBottomPadding() + 16.dp
+                        bottom = paddingValues.calculateBottomPadding()
                     ),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
@@ -120,10 +134,12 @@ fun CustomersScreen(
                     ) { customer ->
                         CustomerItem(
                             customer = customer,
-                            onClick = {
-                                onAction(CustomersUIAction.CustomerClicked(customer.id))
-                            }
-                        )
+                            onImageClick = {
+                                onAction(CustomersUIAction.OpenImageClicked(customer.profileImage.orEmpty()))
+                            },
+                            onProfileClick = {
+                                onAction(CustomersUIAction.OpenProfileClicked(customer.profileLink.orEmpty()))
+                            })
                     }
                 }
             }

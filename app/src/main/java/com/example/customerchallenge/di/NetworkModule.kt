@@ -29,5 +29,4 @@ val netWorkModule = module {
 
     single<CustomerApi> { get<Retrofit>().create(CustomerApi::class.java) }
 
-
 }

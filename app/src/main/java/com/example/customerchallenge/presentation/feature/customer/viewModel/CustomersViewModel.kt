@@ -30,9 +30,28 @@ class CustomersViewModel(
 
     fun onAction(action: CustomersUIAction) {
         when (action) {
-            is CustomersUIAction.CustomerClicked -> TODO()
             CustomersUIAction.LoadCustomers,
             CustomersUIAction.Retry -> loadCustomers()
+
+            is CustomersUIAction.OpenImageClicked -> openCustomerImage(imageUrl = action.imageUrl)
+            is CustomersUIAction.OpenProfileClicked -> openCustomerProfile(profileLink = action.profileLink)
+        }
+    }
+
+    private fun openCustomerProfile(profileLink: String) {
+        if (profileLink.isBlank()) return
+        viewModelScope.launch {
+            _sideEffect.emit(
+                CustomersUISideEffect.OpenCustomerProfile(
+                    profileLink = profileLink
+                )
+            )
+        }
+    }
+
+    private fun openCustomerImage(imageUrl: String) {
+        viewModelScope.launch {
+            _sideEffect.emit(CustomersUISideEffect.OpenCustomerImage(imageUrl))
         }
     }
 
@@ -40,14 +59,15 @@ class CustomersViewModel(
         _uiState.update { CustomersUIState.Loading }
         getCustomersUseCase().onSuccess { customers ->
             _uiState.update {
-                if(customers.isEmpty()){
+                if (customers.isEmpty()) {
                     CustomersUIState.Empty
-                }else{
+                } else {
                     CustomersUIState.Success(customers)
                 }
             }
         }.onFailure { error ->
-            Log.e(TAG,
+            Log.e(
+                TAG,
                 "Failed to load customers",
                 error
             )
