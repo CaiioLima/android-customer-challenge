@@ -1,12 +1,12 @@
 package com.example.customerchallenge.di
 
-import com.example.customerchallenge.data.remote.api.CustomerApi
-import com.example.customerchallenge.data.remote.network.HttpLoggingInterceptorFactory
-import com.example.customerchallenge.data.remote.network.NetworkConstants
-import com.example.customerchallenge.data.remote.network.OkHttpClientFactory
-import com.example.customerchallenge.data.remote.network.RetrofitFactory
-import com.example.customerchallenge.data.remote.websocket.EchoWebSocketManager
-import com.example.customerchallenge.data.remote.websocket.WebSocketLifecycleObserver
+import com.example.customerchallenge.data.remote.customer.api.CustomerApi
+import com.example.customerchallenge.data.remote.customer.network.HttpLoggingInterceptorFactory
+import com.example.customerchallenge.data.remote.customer.network.NetworkConstants
+import com.example.customerchallenge.data.remote.customer.network.OkHttpClientFactory
+import com.example.customerchallenge.data.remote.customer.network.RetrofitFactory
+import com.example.customerchallenge.data.remote.customer.websocket.EchoWebSocketManager
+import com.example.customerchallenge.data.remote.customer.websocket.WebSocketLifecycleObserver
 import org.koin.dsl.module
 import retrofit2.Retrofit
 

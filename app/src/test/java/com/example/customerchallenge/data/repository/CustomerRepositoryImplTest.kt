@@ -1,9 +1,9 @@
 package com.example.customerchallenge.data.repository
 
-import com.example.customerchallenge.data.remote.datasource.CustomerRemoteDataSource
-import com.example.customerchallenge.data.remote.dto.CustomerDTO
-import com.example.customerchallenge.data.remote.dto.CustomersResponseDTO
-import com.example.customerchallenge.data.remote.error.NetworkException
+import com.example.customerchallenge.data.remote.customer.datasource.CustomerRemoteDataSource
+import com.example.customerchallenge.data.remote.customer.dto.CustomerDTO
+import com.example.customerchallenge.data.remote.customer.dto.CustomersResponseDTO
+import com.example.customerchallenge.data.remote.customer.error.NetworkException
 import com.example.customerchallenge.domain.model.Customer
 import io.mockk.coEvery
 import io.mockk.coVerify

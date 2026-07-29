@@ -1,4 +1,4 @@
-package com.example.customerchallenge.data.remote.error
+package com.example.customerchallenge.data.remote.customer.error
 
 import retrofit2.HttpException
 import java.io.IOException

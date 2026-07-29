@@ -1,8 +1,10 @@
 package com.example.customerchallenge.presentation.feature.customer
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -22,6 +24,7 @@ import com.example.customerchallenge.presentation.CustomersUIAction
 import com.example.customerchallenge.presentation.CustomersUIState
 import com.example.customerchallenge.presentation.customer.CustomersUISideEffect
 import com.example.customerchallenge.presentation.feature.customer.components.CustomerItem
+import com.example.customerchallenge.presentation.feature.customer.components.CustomerSearchBar
 import com.example.customerchallenge.presentation.feature.customer.components.CustomersEmptyState
 import com.example.customerchallenge.presentation.feature.customer.components.CustomersErrorState
 import com.example.customerchallenge.presentation.feature.customer.components.CustomersLoadingState
@@ -118,28 +121,63 @@ fun CustomersScreen(
             }
 
             is CustomersUIState.Success -> {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(
-                        start = 16.dp,
-                        top = paddingValues.calculateTopPadding(),
-                        end = 16.dp,
-                        bottom = paddingValues.calculateBottomPadding()
-                    ),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(
+                            top = paddingValues.calculateTopPadding(),
+                            bottom = paddingValues.calculateBottomPadding()
+                        )
                 ) {
-                    items(
-                        items = uiState.customers,
-                        key = { customer -> customer.id }
-                    ) { customer ->
-                        CustomerItem(
-                            customer = customer,
-                            onImageClick = {
-                                onAction(CustomersUIAction.OpenImageClicked(customer.profileImage.orEmpty()))
-                            },
-                            onProfileClick = {
-                                onAction(CustomersUIAction.OpenProfileClicked(customer.profileLink.orEmpty()))
-                            })
+                    CustomerSearchBar(
+                        query = uiState.searchQuery,
+                        onQueryChanged = { query ->
+                            onAction(
+                                CustomersUIAction.SearchQueryChanged(
+                                    query = query
+                                )
+                            )
+                        },
+                        modifier = Modifier.padding(
+                            horizontal = 16.dp,
+                            vertical = 8.dp
+                        )
+                    )
+
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .weight(1f),
+                        contentPadding = PaddingValues(
+                            start = 16.dp,
+                            top = 4.dp,
+                            end = 16.dp,
+                            bottom = 16.dp
+                        ),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        items(
+                            items = uiState.filteredCustomers,
+                            key = { customer -> customer.id }
+                        ) { customer ->
+                            CustomerItem(
+                                customer = customer,
+                                onImageClick = {
+                                    onAction(
+                                        CustomersUIAction.OpenImageClicked(
+                                            imageUrl = customer.profileImage.orEmpty()
+                                        )
+                                    )
+                                },
+                                onProfileClick = {
+                                    onAction(
+                                        CustomersUIAction.OpenProfileClicked(
+                                            profileLink = customer.profileLink.orEmpty()
+                                        )
+                                    )
+                                }
+                            )
+                        }
                     }
                 }
             }

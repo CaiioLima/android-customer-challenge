@@ -1,4 +1,4 @@
-package com.example.customerchallenge.data.remote.error
+package com.example.customerchallenge.data.remote.customer.error
 
 internal inline fun <T> Result<T>.mapException(
     transform: (Throwable) -> Throwable
