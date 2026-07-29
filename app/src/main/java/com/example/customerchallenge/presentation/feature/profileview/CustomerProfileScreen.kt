@@ -6,7 +6,9 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -16,7 +18,9 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -29,6 +33,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.example.customerchallenge.R
 
@@ -41,7 +47,7 @@ fun CustomerProfileScreen(
 ) {
     val context = LocalContext.current
 
-    var uiState by remember {
+    var uiState by remember(profileLink) {
         mutableStateOf<CustomerProfileUIState>(
             CustomerProfileUIState.Loading
         )
@@ -79,8 +85,7 @@ fun CustomerProfileScreen(
                     error: WebResourceError?
                 ) {
                     if (request?.isForMainFrame == true) {
-                        hasMainFrameError = true
-                        uiState = CustomerProfileUIState.Error
+                        handleMainFrameError(view)
                     }
                 }
 
@@ -90,9 +95,16 @@ fun CustomerProfileScreen(
                     errorResponse: WebResourceResponse?
                 ) {
                     if (request?.isForMainFrame == true) {
-                        hasMainFrameError = true
-                        uiState = CustomerProfileUIState.Error
+                        handleMainFrameError(view)
                     }
+                }
+
+                private fun handleMainFrameError(
+                    view: WebView?
+                ) {
+                    hasMainFrameError = true
+                    view?.stopLoading()
+                    uiState = CustomerProfileUIState.Error
                 }
             }
 
@@ -137,38 +149,47 @@ fun CustomerProfileScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues),
-            contentAlignment = Alignment.Center
+                .padding(paddingValues)
         ) {
+            AndroidView(
+                modifier = Modifier.fillMaxSize(),
+                factory = {
+                    webView
+                }
+            )
+
             when (uiState) {
                 CustomerProfileUIState.Loading -> {
-                    AndroidView(
+                    Surface(
                         modifier = Modifier.fillMaxSize(),
-                        factory = {
-                            webView
+                        color = MaterialTheme.colorScheme.background
+                    ) {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator()
                         }
-                    )
-
-                    CircularProgressIndicator()
-                }
-
-                CustomerProfileUIState.Success -> {
-                    AndroidView(
-                        modifier = Modifier.fillMaxSize(),
-                        factory = {
-                            webView
-                        }
-                    )
+                    }
                 }
 
                 CustomerProfileUIState.Error -> {
-                    CustomerProfileErrorState(
-                        onRetry = {
-                            uiState = CustomerProfileUIState.Loading
-                            webView.loadUrl(profileLink)
-                        }
-                    )
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        color = MaterialTheme.colorScheme.background
+                    ) {
+                        CustomerProfileErrorState(
+                            modifier = Modifier.fillMaxSize(),
+                            onRetry = {
+                                webView.stopLoading()
+                                uiState = CustomerProfileUIState.Loading
+                                webView.loadUrl(profileLink)
+                            }
+                        )
+                    }
                 }
+
+                CustomerProfileUIState.Success -> Unit
             }
         }
     }
@@ -179,23 +200,22 @@ private fun CustomerProfileErrorState(
     onRetry: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    androidx.compose.foundation.layout.Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
+    Column(
+        modifier = modifier.padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = stringResource(
-                id = R.string.customer_profile_load_error
-            )
+            text = stringResource(id = R.string.customer_profile_load_error),
+            textAlign = TextAlign.Center
         )
 
         Button(
+            modifier = Modifier.padding(top = 16.dp),
             onClick = onRetry
         ) {
             Text(
-                text = stringResource(
-                    id = R.string.retry
-                )
+                text = stringResource(id = R.string.retry)
             )
         }
     }
