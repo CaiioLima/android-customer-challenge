@@ -13,13 +13,38 @@ internal fun CustomerDTO.toDomain(): Customer {
         status = status.orEmpty(),
         email = email.orEmpty(),
         phone = phone,
-        profileImage = profileImage?.replace(
-            oldValue = "/testApp/",
-            newValue = "/testApp2026/"
-        ),
+        profileImage = profileImage.normalizeProfileImageUrl(),
         profileLink = profileLink
     )
 }
+
+private fun String?.normalizeProfileImageUrl(): String? {
+    if (this == null) return null
+
+    val normalizedRepositoryPath = replace(
+        oldValue = "/testApp/",
+        newValue = "/testApp2026/"
+    )
+
+    return JPEG_IMAGE_NAMES.fold(
+        initial = normalizedRepositoryPath
+    ) { currentUrl, imageName ->
+        currentUrl.replace(
+            oldValue = "$imageName.jpg",
+            newValue = "$imageName.jpeg"
+        )
+    }
+}
+
+private val JPEG_IMAGE_NAMES = setOf(
+    "macaco2",
+    "macaco3",
+    "macaco4",
+    "macaco5",
+    "macaco7",
+    "macaco8",
+    "macaco9"
+)
 
 internal fun CustomersResponseDTO.toDomain(): List<Customer> {
     return customers

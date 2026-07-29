@@ -137,6 +137,7 @@ class CustomersViewModel(
                     )
                 }
             }
+
         }.onFailure { error ->
             Log.e(
                 TAG,

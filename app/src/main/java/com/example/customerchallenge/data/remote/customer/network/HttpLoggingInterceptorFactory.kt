@@ -1,7 +1,7 @@
 package com.example.customerchallenge.data.remote.customer.network
 
 import okhttp3.logging.HttpLoggingInterceptor
-import org.koin.android.BuildConfig
+import com.example.customerchallenge.BuildConfig
 
 internal object HttpLoggingInterceptorFactory {
 

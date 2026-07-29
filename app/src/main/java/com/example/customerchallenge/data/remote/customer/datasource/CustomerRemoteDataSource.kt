@@ -6,12 +6,12 @@ import com.example.customerchallenge.data.remote.customer.error.NetworkErrorMapp
 import com.example.customerchallenge.data.remote.customer.error.mapException
 
 class CustomerRemoteDataSource(
-    private val api: com.example.customerchallenge.data.remote.customer.api.CustomerApi
+    private val api: CustomerApi
 ) {
-    suspend fun getCustomers(): Result<com.example.customerchallenge.data.remote.customer.dto.CustomersResponseDTO> =
+    suspend fun getCustomers(): Result<CustomersResponseDTO> =
         runCatching {
             api.getCustomers()
         }.mapException { throwable ->
-            _root_ide_package_.com.example.customerchallenge.data.remote.customer.error.NetworkErrorMapper.map(throwable)
+            NetworkErrorMapper.map(throwable)
         }
 }

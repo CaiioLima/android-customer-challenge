@@ -11,7 +11,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import com.example.customerchallenge.R
 
 @Composable
 fun CustomersLoadingState(
@@ -32,8 +34,8 @@ fun CustomersEmptyState(
 ) {
     CustomersMessageState(
         modifier = modifier,
-        title = "No customers found",
-        message = "There are no customers available.",
+        title = stringResource(id = R.string.customers_empty_title),
+        message = stringResource(id = R.string.customers_empty_message),
         onRetry = onRetry
     )
 }
@@ -46,7 +48,7 @@ fun CustomersErrorState(
 ) {
     CustomersMessageState(
         modifier = modifier,
-        title = "Unable to load customers",
+        title = stringResource(id = R.string.customers_error_title),
         message = message,
         onRetry = onRetry
     )
@@ -79,7 +81,7 @@ private fun CustomersMessageState(
         Button(
             onClick = onRetry
         ) {
-            Text(text = "Try again")
+            Text(text = stringResource(id = R.string.txt_btn_try_again))
         }
     }
 }

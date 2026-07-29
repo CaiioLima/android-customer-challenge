@@ -31,6 +31,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -187,7 +188,7 @@ private fun CustomerItemContent(
                     onClick = onProfileClick
                 ) {
                     Text(
-                        text = "Open profile",
+                        text = stringResource(R.string.txt_btn_open_profile),
                         maxLines = 1
                     )
                 }
@@ -199,7 +200,7 @@ private fun CustomerItemContent(
                 onClick = onProfileClick,
                 modifier = Modifier.align(Alignment.End)
             ) {
-                Text(text = "Open profile")
+                Text(text = stringResource(R.string.txt_btn_open_profile))
             }
         }
     }
