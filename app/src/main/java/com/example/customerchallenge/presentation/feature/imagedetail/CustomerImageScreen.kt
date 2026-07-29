@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import coil3.compose.AsyncImage
 import com.example.customerchallenge.R
 
@@ -29,7 +30,7 @@ fun CustomerImageScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(text = "Customer Image")
+                    Text(text = stringResource(R.string.customers_image_title))
                 },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {

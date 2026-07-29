@@ -17,10 +17,12 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.AndroidView
+import com.example.customerchallenge.R
 
 
-    @OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun CustomerProfileScreen(
         profileLink: String,
@@ -48,7 +50,7 @@ import androidx.compose.ui.viewinterop.AndroidView
             topBar = {
                 TopAppBar(
                     title = {
-                        Text(text = "Customer profile")
+                        Text(text = stringResource(id = R.string.customers_profile_title))
                     },
                     navigationIcon = {
                         IconButton(onClick = onBackClick) {

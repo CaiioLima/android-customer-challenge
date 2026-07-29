@@ -13,7 +13,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import com.example.customerchallenge.R
 
 
 @Composable
@@ -29,7 +31,7 @@ fun CustomerSearchBar(
         onValueChange = onQueryChanged,
         modifier = modifier.fillMaxWidth(),
         placeholder = {
-            Text(text = "Search customers")
+            Text(text = stringResource(id = R.string.txt_search_placeholder))
         },
         leadingIcon = {
             Icon(

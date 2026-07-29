@@ -18,8 +18,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.customerchallenge.R
 import com.example.customerchallenge.presentation.CustomersUIAction
 import com.example.customerchallenge.presentation.CustomersUIState
 import com.example.customerchallenge.presentation.customer.CustomersUISideEffect
@@ -82,7 +84,7 @@ fun CustomersScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Customers List",
+                        text = stringResource(id = R.string.customers_list_title),
                         style = typography.titleLarge
                     )
                 }

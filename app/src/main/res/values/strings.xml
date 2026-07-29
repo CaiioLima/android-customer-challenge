@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">CustomerChallenge</string>
+    <string name="customers_list_title">Customers List</string>
+    <string name="customers_image_title">Customer Image</string>
+    <string name="customers_profile_title">Customer profile</string>
+    <string name="txt_search_placeholder">Search customers</string>
+    <string name="txt_btn_open_profile">Open profile</string>
+    <string name="txt_btn_try_again">Try Again</string>
+    <string name="customers_empty_title">No customers found</string>
+    <string name="customers_empty_message">There are no customers available.</string>
+    <string name="customers_error_title">Unable to load customers</string>
 </resources>
