@@ -6,7 +6,6 @@ import com.example.customerchallenge.domain.repository.CustomerRepository
 class GetCustomersUseCase(
     private val repository: CustomerRepository
 ) {
-
     /**
      * Retrieves the available customers from the repository.
      *

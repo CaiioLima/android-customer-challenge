@@ -7,7 +7,9 @@ import com.example.customerchallenge.domain.model.Customer
 internal fun CustomerDTO.toDomain(): Customer {
     return Customer(
         id = id.orEmpty(),
-        name = name.orEmpty(),
+        name = name
+            ?.takeIf { it.isNotBlank() }
+            ?: UNKNOWN_CUSTOMER_NAME,
         status = status.orEmpty(),
         email = email.orEmpty(),
         phone = phone,
@@ -24,3 +26,5 @@ internal fun CustomersResponseDTO.toDomain(): List<Customer> {
         .orEmpty()
         .map(CustomerDTO::toDomain)
 }
+
+private const val UNKNOWN_CUSTOMER_NAME = "Unknown"

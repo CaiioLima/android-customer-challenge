@@ -32,7 +32,6 @@ class CustomersViewModel(
         when (action) {
             CustomersUIAction.LoadCustomers,
             CustomersUIAction.Retry -> loadCustomers()
-
             is CustomersUIAction.OpenImageClicked -> openCustomerImage(imageUrl = action.imageUrl)
             is CustomersUIAction.OpenProfileClicked -> openCustomerProfile(profileLink = action.profileLink)
         }
@@ -82,7 +81,6 @@ class CustomersViewModel(
         const val TAG = "CustomersViewModel"
         const val DEFAULT_ERROR_MESSAGE = "Unable to load customers"
     }
-
 
 }
 

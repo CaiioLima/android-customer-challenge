@@ -7,8 +7,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.customerchallenge.presentation.feature.customer.CustomersScreen
-import com.example.customerchallenge.presentation.feature.customer.image.CustomerImageScreen
-import com.example.customerchallenge.presentation.feature.customer.profile.CustomerProfileScreen
+import com.example.customerchallenge.presentation.feature.imagedetail.CustomerImageScreen
+import com.example.customerchallenge.presentation.feature.profileview.CustomerProfileScreen
 
 @Composable
 fun AppNavHost(
