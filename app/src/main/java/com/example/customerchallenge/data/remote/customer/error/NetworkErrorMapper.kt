@@ -7,16 +7,16 @@ import java.net.UnknownHostException
 
 internal object NetworkErrorMapper {
 
-    fun map(throwable: Throwable): com.example.customerchallenge.data.remote.customer.error.NetworkException {
+    fun map(throwable: Throwable): NetworkException {
         return when (throwable) {
-            is com.example.customerchallenge.data.remote.customer.error.NetworkException -> throwable
+            is NetworkException -> throwable
 
             is SocketTimeoutException -> {
-                _root_ide_package_.com.example.customerchallenge.data.remote.customer.error.NetworkException.Timeout(cause = throwable)
+                NetworkException.Timeout(cause = throwable)
             }
 
             is UnknownHostException -> {
-                _root_ide_package_.com.example.customerchallenge.data.remote.customer.error.NetworkException.NoConnection(cause = throwable)
+                NetworkException.NoConnection(cause = throwable)
             }
 
             is HttpException -> {
@@ -24,18 +24,18 @@ internal object NetworkErrorMapper {
             }
 
             is IOException -> {
-                _root_ide_package_.com.example.customerchallenge.data.remote.customer.error.NetworkException.NoConnection(cause = throwable)
+                NetworkException.NoConnection(cause = throwable)
             }
 
             else -> {
-                _root_ide_package_.com.example.customerchallenge.data.remote.customer.error.NetworkException.Unexpected(cause = throwable)
+                NetworkException.Unexpected(cause = throwable)
             }
         }
     }
 
     private fun mapHttpException(
         exception: HttpException
-    ): com.example.customerchallenge.data.remote.customer.error.NetworkException {
+    ): NetworkException {
         return when (exception.code()) {
             401, 403 -> NetworkException.Unauthorized(
                 cause = exception
