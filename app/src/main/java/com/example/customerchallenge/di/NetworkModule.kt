@@ -6,6 +6,7 @@ import com.example.customerchallenge.data.remote.network.NetworkConstants
 import com.example.customerchallenge.data.remote.network.OkHttpClientFactory
 import com.example.customerchallenge.data.remote.network.RetrofitFactory
 import org.koin.dsl.module
+import retrofit2.Retrofit
 
 val netWorkModule = module {
 
@@ -25,5 +26,7 @@ val netWorkModule = module {
             okHttpClient = get()
         )
     }
+
+    single<CustomerApi> { get<Retrofit>().create(CustomerApi::class.java) }
 
 }
