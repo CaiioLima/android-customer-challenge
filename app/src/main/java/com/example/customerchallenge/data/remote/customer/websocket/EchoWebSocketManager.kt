@@ -1,6 +1,7 @@
 package com.example.customerchallenge.data.remote.customer.websocket
 
 import android.util.Log
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -8,6 +9,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
@@ -31,6 +33,8 @@ class EchoWebSocketManager(
     @Volatile
     private var shouldRemainConnected = false
 
+    private var pendingResponse: CompletableDeferred<String>? = null
+
     fun connect() {
         if (
             shouldRemainConnected &&
@@ -45,6 +49,9 @@ class EchoWebSocketManager(
 
     fun disconnect() {
         shouldRemainConnected = false
+
+        pendingResponse?.cancel()
+        pendingResponse = null
 
         messageJob?.cancel()
         messageJob = null
@@ -91,6 +98,9 @@ class EchoWebSocketManager(
                 text: String
             ) {
                 Log.d(TAG, "WebSocket message received: $text")
+                if (text == HELLO_MESSAGE) {
+                    pendingResponse?.complete(text)
+                }
             }
 
             override fun onMessage(
@@ -100,6 +110,10 @@ class EchoWebSocketManager(
                 val message = bytes.utf8()
 
                 Log.d(TAG, "WebSocket binary message received: $message")
+
+                if (message == HELLO_MESSAGE) {
+                    pendingResponse?.complete(message)
+                }
             }
 
             override fun onClosing(
@@ -137,18 +151,48 @@ class EchoWebSocketManager(
         messageJob?.cancel()
         messageJob = managerScope.launch {
             while (isActive && shouldRemainConnected) {
+                val responseDeferred = CompletableDeferred<String>()
+
+                pendingResponse?.cancel()
+                pendingResponse = responseDeferred
+
                 val wasSent = webSocket.send(HELLO_MESSAGE)
-                if (wasSent) {
-                    Log.d(TAG, "WebSocket message sent: $HELLO_MESSAGE")
-                } else {
+
+                if (!wasSent) {
                     Log.e(TAG, "Unable to enqueue WebSocket message")
+
+                    pendingResponse = null
+                    webSocket.cancel()
+                    break
                 }
+
+                Log.d(TAG, "WebSocket message sent: $HELLO_MESSAGE")
+
+                val response = withTimeoutOrNull(
+                    RESPONSE_TIMEOUT_MILLIS
+                ) { responseDeferred.await() }
+
+                pendingResponse = null
+
+                if (response == null) {
+                    Log.e(
+                        TAG, "WebSocket hello response timed out")
+
+                    webSocket.cancel()
+                    break
+                }
+
+                Log.d(TAG, "WebSocket hello response confirmed")
+
                 delay(MESSAGE_INTERVAL_MILLIS)
             }
         }
     }
 
     private fun handleDisconnection() {
+        pendingResponse?.cancel()
+        pendingResponse = null
+
         webSocket = null
 
         messageJob?.cancel()
@@ -182,6 +226,7 @@ class EchoWebSocketManager(
         const val NORMAL_CLOSURE_REASON = "Application moved to background"
 
         val MESSAGE_INTERVAL_MILLIS = TimeUnit.SECONDS.toMillis(30)
+        val RESPONSE_TIMEOUT_MILLIS = TimeUnit.SECONDS.toMillis(10)
 
         val RECONNECT_DELAY_MILLIS = TimeUnit.SECONDS.toMillis(5)
     }
