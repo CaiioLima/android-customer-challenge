@@ -5,4 +5,5 @@ sealed interface CustomersUIAction {
     data object Retry : CustomersUIAction
     data class OpenProfileClicked(val profileLink: String) : CustomersUIAction
     data class OpenImageClicked(val imageUrl: String) : CustomersUIAction
+    data class SearchQueryChanged(val query: String) : CustomersUIAction
 }

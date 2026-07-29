@@ -1,9 +1,12 @@
 package com.example.customerchallenge.data.remote.datasource
 
 
-import com.example.customerchallenge.data.remote.api.CustomerApi
-import com.example.customerchallenge.data.remote.dto.CustomersResponseDTO
-import com.example.customerchallenge.data.remote.error.NetworkException
+
+import com.example.customerchallenge.data.remote.customer.api.CustomerApi
+import com.example.customerchallenge.data.remote.customer.datasource.CustomerRemoteDataSource
+import com.example.customerchallenge.data.remote.customer.dto.CustomersResponseDTO
+import com.example.customerchallenge.data.remote.customer.error.NetworkException
+
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

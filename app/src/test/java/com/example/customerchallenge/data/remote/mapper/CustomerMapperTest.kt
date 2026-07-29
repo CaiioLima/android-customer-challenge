@@ -1,7 +1,9 @@
 package com.example.customerchallenge.data.remote.mapper
 
-import com.example.customerchallenge.data.remote.dto.CustomerDTO
-import com.example.customerchallenge.data.remote.dto.CustomersResponseDTO
+
+import com.example.customerchallenge.data.remote.customer.dto.CustomerDTO
+import com.example.customerchallenge.data.remote.customer.dto.CustomersResponseDTO
+import com.example.customerchallenge.data.remote.customer.mapper.toDomain
 import com.example.customerchallenge.domain.model.Customer
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
